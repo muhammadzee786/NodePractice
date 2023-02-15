@@ -5,6 +5,7 @@ const app = express()
 app.set('view engine', 'ejs')
 app.set('views', 'views')
 
+const errorController = require('./controllers/error.controller')
 const adminData = require("./Routes/admin")
 const shopRoutes = require("./Routes/shop")
 // var fs = require("fs");
@@ -17,10 +18,7 @@ app.use(express.urlencoded({
 app.use('/admin',adminData)
 app.use(shopRoutes)
 
-app.use((req, res, next) => {
-    // res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))
-    res.status(404).render('404', {pageTitle: 'Page Not Found'})
-})
+app.use(errorController.get404)
 
 app.listen(8081)
 // var data = fs.readFileSync('input.txt')

@@ -14,7 +14,7 @@ app.use(express.urlencoded({
     extended: true
 }))
 
-app.use('/admin',adminData.routes)
+app.use('/admin',adminData)
 app.use(shopRoutes)
 
 app.use((req, res, next) => {

@@ -6,8 +6,8 @@ app.set('view engine', 'ejs')
 app.set('views', 'views')
 
 const errorController = require('./controllers/error.controller')
-const adminData = require("./Routes/admin")
-const shopRoutes = require("./Routes/shop")
+const adminData = require("./routes/admin")
+const shopRoutes = require("./routes/shop")
 // var fs = require("fs");
 app.use(express.static(path.join(__dirname, "public")))
 

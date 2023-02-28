@@ -1,4 +1,5 @@
 const Product = require("../models/product.model");
+const Cart = require("../models/cart.model");
 
 exports.getAddProducts = (req, res, next) => {
     res.render('admin/edit-product',
@@ -15,18 +16,22 @@ exports.getEditProducts = (req, res, next) => {
         return res.redirect("/")
     }
     const prodId = req.params.productId
-    Product.findById(prodId, product => {
-        if (!product) {
-            return res.redirect('/')
-        }
-        res.render('admin/edit-product',
-            {
-                pageTitle: 'Edit Product',
-                path: '/admin/edit-product',
-                editing: editMode,
-                product: product
-            })
-    })
+    Product.findById(prodId)
+        .then(([product]) => {
+            if (!product) {
+                return res.redirect('/')
+            }
+            res.render('admin/edit-product',
+                {
+                    pageTitle: 'Edit Product',
+                    path: '/admin/edit-product',
+                    editing: editMode,
+                    product: product[0]
+                })
+        })
+        .catch((err) => {
+            console.log(err)
+        })
 }
 
 exports.postAddProducts = (req, res, next) => {
@@ -52,8 +57,13 @@ exports.postEditProducts = (req, res, next) => {
     const updatedPrice = req.body.price
     const updatedDescription = req.body.description
     const updatedProduct = new Product(prodId, updatedTitle, updatedImageUrl, updatedPrice, updatedDescription)
-    updatedProduct.save()
-    res.redirect("/admin/products")
+    updatedProduct.updateProduct(prodId)
+        .then(() => {
+            res.redirect("/admin/products")
+        })
+        .catch((err) => {
+            console.log(err)
+        })
 }
 
 exports.postDeleteProduct = (req, res, next) => {

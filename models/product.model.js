@@ -16,6 +16,10 @@ module.exports = class Product {
             [this.title, this.price, this.description, this.imageUrl])
     }
 
+    updateProduct(id){
+        return db.execute('UPDATE products SET title=?, price=?, description=?, imageUrl=?  where id=?', [this.title, this.price, this.description, this.imageUrl, id])
+    }
+
     static deleteById(id) {
         return db.execute('DELETE FROM products where id=?', [id])
     }

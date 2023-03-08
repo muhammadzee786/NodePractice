@@ -2,7 +2,7 @@ const {DataTypes} = require("sequelize")
 
 const sequenlize = require('../util/database')
 
-const User = sequenlize.define('user',{
+const UserModel = sequenlize.define('user',{
     id:{
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -19,4 +19,4 @@ const User = sequenlize.define('user',{
     }
 })
 
-module.exports = User
+module.exports = UserModel

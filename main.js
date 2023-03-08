@@ -6,6 +6,8 @@ app.set('view engine', 'ejs')
 app.set('views', 'views')
 
 const sequelize = require('./util/database')
+const Product = require('./models/product.model')
+const User = require('./models/user.model')
 
 const errorController = require('./controllers/error.controller')
 const adminData = require("./routes/admin")
@@ -22,7 +24,10 @@ app.use(shopRoutes)
 
 app.use(errorController.get404)
 
-sequelize.sync()
+Product.belongsTo(User, {constraints: true, onDelete: 'CASCADE'})
+User.hasMany(Product)
+
+sequelize.sync({force: true})
     .then(result => {
         app.listen(8081)
     })

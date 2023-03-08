@@ -16,8 +16,8 @@ exports.getEditProducts = (req, res, next) => {
         return res.redirect("/")
     }
     const prodId = req.params.productId
-    Product.findById(prodId)
-        .then(([product]) => {
+    Product.findByPk(prodId)
+        .then((product) => {
             if (!product) {
                 return res.redirect('/')
             }
@@ -26,12 +26,13 @@ exports.getEditProducts = (req, res, next) => {
                     pageTitle: 'Edit Product',
                     path: '/admin/edit-product',
                     editing: editMode,
-                    product: product[0]
+                    product: product
                 })
         })
-        .catch((err) => {
+        .catch(err => {
             console.log(err)
         })
+
 }
 
 exports.postAddProducts = (req, res, next) => {
@@ -60,12 +61,19 @@ exports.postEditProducts = (req, res, next) => {
     const updatedImageUrl = req.body.imageUrl
     const updatedPrice = req.body.price
     const updatedDescription = req.body.description
-    const updatedProduct = new Product(prodId, updatedTitle, updatedImageUrl, updatedPrice, updatedDescription)
-    updatedProduct.updateProduct(prodId)
-        .then(() => {
+    Product.findByPk(prodId)
+        .then(product => {
+            product.title = updatedTitle;
+            product.imageUrl = updatedImageUrl;
+            product.price = updatedPrice;
+            product.description = updatedDescription
+            return product.save()
+        })
+        .then(result => {
+            console.log("update product successfully")
             res.redirect("/admin/products")
         })
-        .catch((err) => {
+        .catch(err => {
             console.log(err)
         })
 }

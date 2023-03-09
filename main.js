@@ -9,7 +9,9 @@ const sequelize = require('./util/database')
 const Product = require('./models/product.model')
 const User = require('./models/user.model')
 const Cart = require('./models/cart.model')
-const CartItem = require('./models/cart-item')
+const CartItem = require('./models/cart-item.model')
+const Order = require('./models/order.model')
+const OrderItem = require('./models/order-item.model')
 
 const errorController = require('./controllers/error.controller')
 const adminData = require("./routes/admin")
@@ -43,6 +45,10 @@ Cart.belongsTo(User)
 User.hasOne(Cart)
 Cart.belongsToMany(Product, {through: CartItem})
 Product.belongsToMany(Cart, {through: CartItem})
+Order.belongsTo(User)
+User.hasMany(Order)
+Order.belongsToMany(Product, {through: OrderItem})
+
 
 sequelize.sync()
     .then(result => {

@@ -2,7 +2,7 @@ const {Sequelize, DataTypes} = require('sequelize')
 
 const sequelize = require('../util/database')
 
-const CartItem = sequelize.define('cartItem', {
+const CartItemModel = sequelize.define('cartItem', {
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -12,4 +12,4 @@ const CartItem = sequelize.define('cartItem', {
     quantity: DataTypes.INTEGER
 })
 
-module.exports = CartItem
+module.exports = CartItemModel

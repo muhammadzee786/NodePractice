@@ -130,6 +130,33 @@ exports.getCheckout = (req, res, next) => {
     })
 }
 
+exports.postOrder = (req, res, next) => {
+    req.user.getCart()
+        .then(cart => {
+            return cart.getProducts()
+        })
+        .then(products => {
+            return  req.user.createOrder()
+                .then(order => {
+                    return order.addProducts(
+                        products.map(product => {
+                            Product.cartItem = {quantity: product.cartItem.quantity}
+                            return product
+                        })
+                    )
+                })
+                .then(result => {
+                    res.redirect('/order')
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
+
 exports.getOrder = (req, res, next) => {
     res.render('shop/order', {
         path: '/order',

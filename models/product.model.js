@@ -1,6 +1,16 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const  getDb = require('../util/database').getDb()
+class Product {
+    constructor(title, price, imageUrl, description) {
+        this.title = title;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.description = description;
+    }
 
-const sequelize = require('../util/database')
+    save(){
+
+    }
+}
 
 const Product = sequelize.define('product', {
     // Model attributes are defined here
